@@ -320,7 +320,10 @@ class SlowFastModel(nn.Module):
                 ],
             ],
             dropout_rate=cfg.MODEL.DROPOUT_RATE,
+            ext_features=cfg.MODEL.EXT_FEATURES
         )
+
+        self.ext_features = cfg.MODEL.EXT_FEATURES
 
     def forward(self, x):
         x = self.s1(x)
@@ -335,8 +338,11 @@ class SlowFastModel(nn.Module):
         x = self.s4(x)
         x = self.s4_fuse(x)
         x = self.s5(x)
-        x = self.head(x)
-        return x
+        x, feat = self.head(x)
+        if self.ext_features:
+            return x, feat
+        else:
+            return x
 
 
 class ResNetModel(nn.Module):
@@ -485,7 +491,10 @@ class ResNetModel(nn.Module):
                 ]
             ],
             dropout_rate=cfg.MODEL.DROPOUT_RATE,
+            ext_features=cfg.MODEL.EXT_FEATURES
         )
+
+        self.ext_features = cfg.MODEL.EXT_FEATURES
 
     def forward(self, x):
         x = self.s1(x)
@@ -496,5 +505,8 @@ class ResNetModel(nn.Module):
         x = self.s3(x)
         x = self.s4(x)
         x = self.s5(x)
-        x = self.head(x)
-        return x
+        x, feat = self.head(x)
+        if self.ext_features:
+            return x, feat
+        else:
+            return x

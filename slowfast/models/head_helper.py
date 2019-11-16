@@ -23,6 +23,7 @@ class ResNetBasicHead(nn.Module):
         pool_size,
         dropout_rate=0.0,
         act_func="softmax",
+        ext_features=False
     ):
         """
         The `__init__` method of any subclass should also contain these
@@ -41,6 +42,8 @@ class ResNetBasicHead(nn.Module):
                 dropout.
             act_func (string): activation function to use. 'softmax': applies
                 softmax on the output. 'sigmoid': applies sigmoid on the output.
+            ext_features (bool): flag to turn on/off feature extraction after average
+                pooling layer
         """
         super(ResNetBasicHead, self).__init__()
         assert (
@@ -69,6 +72,8 @@ class ResNetBasicHead(nn.Module):
                 "function.".format(act_func)
             )
 
+        self.ext_features = ext_features
+
     def forward(self, inputs):
         assert (
             len(inputs) == self.num_pathways
@@ -80,6 +85,13 @@ class ResNetBasicHead(nn.Module):
         x = torch.cat(pool_out, 1)
         # (N, C, T, H, W) -> (N, T, H, W, C).
         x = x.permute((0, 2, 3, 4, 1))
+        
+        if self.ext_features:
+            feat = x.clone().detach()
+            feat = feat.mean(3).feat(2).view(feat.shape[0], -1)
+        else:
+            feat = None
+
         # Perform dropout.
         if hasattr(self, "dropout"):
             x = self.dropout(x)
@@ -91,4 +103,4 @@ class ResNetBasicHead(nn.Module):
             x = x.mean([1, 2, 3])
 
         x = x.view(x.shape[0], -1)
-        return x
+        return x, feat

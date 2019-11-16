@@ -48,10 +48,18 @@ def multi_view_test(test_loader, model, test_meter, cfg):
         video_idx = video_idx.cuda()
 
         # Perform the forward pass.
-        preds = model(inputs)
+        if cfg.MODEL.EXT_FEATURES:
+            preds, feats = model(inputs)
+            feats = feats.cpu()
+        else:
+            preds = model(inputs)
         # Gather all the predictions across all the devices to perform ensemble.
         if cfg.NUM_GPUS > 1:
-            preds, labels, video_idx = du.all_gather([preds, labels, video_idx])
+            if cfg.MODEL.EXT_FEATURES:
+                preds, labels, video_idx, feats = du.all_gather([preds, labels, video_idx, feats])
+                feats = feats.cpu()
+            else:
+                preds, labels, video_idx = du.all_gather([preds, labels, video_idx])
 
         test_meter.iter_toc()
         # Update and log stats.
