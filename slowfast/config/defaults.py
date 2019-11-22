@@ -39,7 +39,11 @@ _C.TRAIN = CfgNode()
 # If True Train the model, else skip training.
 _C.TRAIN.ENABLE = True
 
+<<<<<<< HEAD
 # Dataset
+=======
+# Dataset.
+>>>>>>> 81fab7651ef6b17b04723f08e41ea54632434ee3
 _C.TRAIN.DATASET = "kinetics"
 
 # Total mini-batch size.
@@ -270,7 +274,11 @@ _C.SOLVER.WARMUP_FACTOR = 0.1
 _C.SOLVER.WARMUP_EPOCHS = 0
 
 # The start learning rate of the warm up.
+<<<<<<< HEAD
 _C.SOLVER.WARMUP_START_LR = 0.001
+=======
+_C.SOLVER.WARMUP_START_LR = 0.01
+>>>>>>> 81fab7651ef6b17b04723f08e41ea54632434ee3
 
 # Optimization method.
 _C.SOLVER.OPTIMIZING_METHOD = "sgd"
@@ -314,6 +322,12 @@ _C.DATA_LOADER.NUM_WORKERS = 8
 # Load data to pinned host memory.
 _C.DATA_LOADER.PIN_MEMORY = True
 
+<<<<<<< HEAD
+=======
+# Enable multi thread decoding.
+_C.DATA_LOADER.ENABLE_MULTI_THREAD_DECODE = False
+
+>>>>>>> 81fab7651ef6b17b04723f08e41ea54632434ee3
 
 def _assert_and_infer_cfg(cfg):
     # BN assertions.

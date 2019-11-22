@@ -191,7 +191,8 @@ class Kinetics(torch.utils.data.Dataset):
             video_container = None
             try:
                 video_container = container.get_video_container(
-                    self._path_to_videos[index]
+                    self._path_to_videos[index],
+                    self.cfg.DATA_LOADER.ENABLE_MULTI_THREAD_DECODE,
                 )
             except Exception as e:
                 logger.info(

@@ -15,3 +15,5 @@ path_to_video_3 label_3
 ...
 path_to_video_N label_N
 ```
+
+All the Kinetics models in the Model Zoo are trained and tested with the same data from the [Non-local Network](https://github.com/facebookresearch/video-nonlocal-net).

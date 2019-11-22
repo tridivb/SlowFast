@@ -55,7 +55,7 @@ def parse_args():
         "--cfg",
         dest="cfg_file",
         help="Path to the config file",
-        default=None,
+        default="configs/Kinetics/SLOWFAST_4x16_R50.yaml",
         type=str,
     )
     parser.add_argument(
@@ -66,7 +66,6 @@ def parse_args():
     )
     if len(sys.argv) == 1:
         parser.print_help()
-        sys.exit(1)
     return parser.parse_args()
 
 
